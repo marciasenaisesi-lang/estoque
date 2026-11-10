@@ -18,12 +18,12 @@
             
             <div class="row">
                 
-                <div class="form-field col-6">
+                <div class="form-field col-8">
                     <label for="nome" class="form-label">Nome</label>
                     <input type="text" name="nome" id="nome" class="form-control" required >
                 </div>
                 
-                <div class="form-field col-6">
+                <div class="form-field col-8">
                     <label for="valor" class="form-label">Valor</label>
                     <input type="number" class="form-control" name="valor" id="valor" placeholder="0.00" required>
                 </div>
@@ -32,11 +32,15 @@
             <br>
 
             <div class="row">
-                <div class="btn-group botoes col-2">
-                    <button type="submit" class="btn-solid theme-primary " id="botaoSubmit">Adicionar</button>
+                <div class="btn-group botoes">
+                    <button type ="reset" class = "btn-solid theme-secondary" id="botaoNovo"> Novo </button>
+                    <button type="submit" class="btn-solid theme-primary visible " id="botaoAdicionar">Adicionar</button>
+                    
+                    <button type="button" class="btn-solid theme-primary invisible" id="botaoAlterar">Alterar</button>
                     
                 </div>
             </div>
+            <div>
         </form>
 
         <br>
@@ -47,7 +51,7 @@
             <th scope="col">ID:</th>
         <th scope="col">Nome:</th>
                      <th scope="col">Valor:</th>
-                     <th scope="col">remover</th>
+                     <th scope="col">editar</th>
                 </tr>
             </thead>
 
@@ -75,12 +79,17 @@
     </main>
 
     <script>
+        let idProduto
         let estoque = []
         let nomeInput =  document.querySelector('#nome')
         let valorInput = document.querySelector('#valor')
+        let botaoAlterar = document.querySelector('#botaoAlterar')
+        let botaoAdicionar = document.querySelector('#botaoAdicionar')
+        let botaoNovo = document.querySelector('#botaoNovo')
 
-
+        
         let form = document.querySelector('#cadastroProduto')
+        
         form.addEventListener('submit' , function(event){
             event.preventDefault();
 
@@ -91,7 +100,15 @@
             capturaFormulario()
 
         }) 
-
+      
+         botaoNovo.addEventListener('click', resetar)
+         botaoAlterar.addEventListener('click',() => alterar(idProduto))
+        
+        function resetar() {
+           botaoAlterar.classList.replace('visible','invisible') 
+           botaoAdicionar.classList.replace('invisible','visible')
+        }
+        
         let botaoSubmit = document.querySelector('#botaoSubmit')
         botaoSubmit.addEventListener('mouseover' , function(){
             console.log('Oi')
@@ -193,6 +210,26 @@
             function carregar(produto) {
              nomeInput.value = produto.nome
              valorInput.value = produto.valor
+             idProduto = produto.id
+             // alterar o botao de adicionar para alterar
+             let botaoAlterar = document.querySelector('#botaoAlterar')
+             botaoAlterar.classList.replace('invisible','visible')
+
+             let botaoAdicionar = document.querySelector('#botaoAdicionar')
+             botaoAdicionar.classList.replace('visible','invisible')
+                        
+            }
+
+            function alterar(id) {
+               // ao clicar
+               console.log ('alterar produto',estoque[id])
+               estoque[id].nome = nomeInput.value
+               estoque[id].valor = valorInput.value
+
+               atualizaTabela (estoque)
+               resetar()
+
+
             }
 
         </script>
